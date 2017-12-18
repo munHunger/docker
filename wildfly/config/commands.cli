@@ -1,0 +1,20 @@
+# Mark the commands below to be run as a batch
+batch
+
+# add postgres module
+module add --name=org.postgres --resources=/opt/jdbc/postgresql-9.4-1205.jdbc42.jar --module-xml=/opt/jdbc/postgres-module.xml
+
+# Add postgres driver
+/subsystem=datasources/jdbc-driver=postgres:add(driver-name="postgres",driver-module-name="org.postgres",driver-class-name=org.postgresql.Driver,driver-xa-datasource-class-name=org.postgresql.xa.PGXADataSource)
+
+# Add the datasource
+data-source add --name=config --driver-name=postgres --jndi-name=java:jboss/datasources/config-ds --connection-url=jdbc:postgresql://postgres:5432/config --user-name=config --password=config --use-ccm=true --max-pool-size=5 --blocking-timeout-wait-millis=5000 --enabled=true --driver-class=org.postgresql.Driver --exception-sorter-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter --jta=true --use-java-context=true --valid-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker
+data-source add --name=mobilebackend --driver-name=postgres --jndi-name=java:jboss/datasources/backend-ds --connection-url=jdbc:postgresql://postgres:5432/mobilebackendapi --user-name=mobilebackendapi --password=mobilebackendapi --use-ccm=true --max-pool-size=5 --blocking-timeout-wait-millis=5000 --enabled=true --driver-class=org.postgresql.Driver --exception-sorter-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter --jta=true --use-java-context=true --valid-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker
+data-source add --name=image --driver-name=postgres --jndi-name=java:jboss/datasources/image-ds --connection-url=jdbc:postgresql://postgres:5432/image --user-name=image --password=image --use-ccm=true --max-pool-size=5 --blocking-timeout-wait-millis=5000 --enabled=true --driver-class=org.postgresql.Driver --exception-sorter-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter --jta=true --use-java-context=true --valid-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker
+data-source add --name=mobilecms --driver-name=postgres --jndi-name=java:jboss/datasources/mobilecms --connection-url=jdbc:postgresql://postgres:5432/mobilecms --user-name=mobilecms --password=mobilecms --use-ccm=true --max-pool-size=5 --blocking-timeout-wait-millis=5000 --enabled=true --driver-class=org.postgresql.Driver --exception-sorter-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter --jta=true --use-java-context=true --valid-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker
+
+# Execute the batch
+run-batch
+
+# Reload the server configuration
+#:reload

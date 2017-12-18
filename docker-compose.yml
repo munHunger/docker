@@ -1,0 +1,46 @@
+version: '2'
+services:
+  apache:
+    image: munhunger/apache
+    build: ./apache
+    container_name: "apache"
+    ports:
+      - "80:80"
+    links:
+      - jenkins:jenkins
+
+  jenkins:
+    image: munhunger/jenkins
+    build: ./jenkins
+    container_name: "jenkins"
+    ports:
+      - "8080:8080"
+  
+  wildfly:
+    image: munhunger/wildfly
+    build: ./wildfly
+
+  pg-master:
+    build: './postgres'
+    image: 'munhunger/postgres-replication'
+    restart: 'always'
+    environment:
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'postgres'
+      PGDATA: '/var/lib/postgresql/data/pgdata'
+    expose:
+     - '5432'
+
+  pg-slave:
+    build: './postgres'
+    image: 'munhunger/postgres-replication'
+    restart: 'always'
+    environment:
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'postgres'
+      PGDATA: '/var/lib/postgresql/data/pgdata'
+      REPLICATE_FROM: 'pg-master'
+    expose:
+     - '5432'
+    links:
+     - 'pg-master'
