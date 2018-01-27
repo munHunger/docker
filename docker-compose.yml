@@ -1,15 +1,23 @@
 version: '2'
 services:
+  minio-client:
+    build: ./minio/client
+    image: munhunger/minio-client
+    container_name: "minio-client"
+
   tomcat:
-    image: munhunger/tomcat
     build: ./tomcat
+    image: munhunger/tomcat
     container_name: "tomcat"
-    ports:
-      - "80:8080"
+    depends_on:
+      - minio-client
+  
   jenkins:
-    image: munhunger/jenkins
     build: ./jenkins
+    image: munhunger/jenkins
     container_name: "jenkins"
+    depends_on:
+      - tomcat
     ports:
       - "81:8080"
-  
+    environment:

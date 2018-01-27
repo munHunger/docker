@@ -1,7 +1,12 @@
 #!/bin/bash
 
 # Start the first process
-/root/updator.sh &
+echo "Configuring minio host"
+/mc config host add minio ${minio_url} ${minio_access} ${minio_secret} s3v4
+
+/mc mirror minio/jenkins /root/.jenkins
+echo "Starting minio watch"
+#/mc mirror --watch --remove /root/.jenkins minio/jenkins &
 status=$?
 if [ $status -ne 0 ]; then
   echo "Failed to start updator: $status"
