@@ -20,4 +20,8 @@ services:
       - tomcat
     ports:
       - "81:8080"
-    environment:
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /root/.jenkins/workspace:/root/.jenkins/workspace
+      - /var/lib/jenkins:/var/lib/jenkins
+      - /var/lib/docker:/var/lib/docker
