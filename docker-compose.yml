@@ -1,27 +1,18 @@
-version: '2'
+version: '3'
 services:
-  minio-client:
-    build: ./minio/client
-    image: munhunger/minio-client
-    container_name: "minio-client"
-
-  tomcat:
-    build: ./tomcat
-    image: munhunger/tomcat
-    container_name: "tomcat"
-    depends_on:
-      - minio-client
-  
-  jenkins:
-    build: ./jenkins
-    image: munhunger/jenkins
-    container_name: "jenkins"
-    depends_on:
-      - tomcat
+  mongo:
+    image: "mongo:3"
+  elasticsearch:
+    image: "elasticsearch:2"
+    command: "elasticsearch -Des.cluster.name='graylog'"
+  graylog:
+    image: graylog2/server:2.1.1-1
+    environment:
+      GRAYLOG_PASSWORD_SECRET: LNrGftcZBYgnXd41roa53j3CBF9jBRse
+      GRAYLOG_ROOT_PASSWORD_SHA2: e569dfd7f8e981aefee513b73c9c2d2955dd640f1ee91155e48c006192383ce4
+      GRAYLOG_WEB_ENDPOINT_URI: http://127.0.0.1:8000/api
+    links:
+      - mongo:mongo
+      - elasticsearch:elasticsearch
     ports:
-      - "81:8080"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /root/.jenkins/workspace:/root/.jenkins/workspace
-      - /var/lib/jenkins:/var/lib/jenkins
-      - /var/lib/docker:/var/lib/docker
+      - "8000:9000"

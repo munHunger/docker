@@ -1,8 +1,5 @@
 FROM munhunger/tomcat:latest
 
-ADD init.sh /root/init.sh
-RUN chmod +x /root/init.sh
-
 RUN apt-get install -y git
 
 RUN wget https://updates.jenkins-ci.org/latest/jenkins.war -O /tmp/jenkins.war
@@ -24,4 +21,4 @@ RUN add-apt-repository -y \
 RUN apt-get update
 RUN apt-get install -y docker-ce
 
-CMD /root/init.sh
+CMD /opt/tomcat/bin/catalina.sh run
