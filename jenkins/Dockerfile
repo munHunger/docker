@@ -3,6 +3,8 @@ FROM munhunger/tomcat:latest
 RUN wget https://updates.jenkins-ci.org/latest/jenkins.war -O /tmp/jenkins.war
 RUN mv /tmp/jenkins.war /opt/tomcat/webapps/jenkins.war
 
+ADD ./jenkinsTheme /opt/tomcat/webapps/jenkinsTheme
+
 RUN mkdir /root/.jenkins
 
 # Installing Docker
